@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e8ede4">
+<title>湖畔，積木記憶 · 互動 3D 場景</title>
+<style>
+:root{--ink:#294c42;--muted:#758378;--paper:#f9faf4;--line:rgba(57,82,66,.15);--panel:rgba(251,252,246,.85);--accent:#b7804a;--wash:#e8ede4;--shadow:0 12px 40px #163b2910;--night:0}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang TC','Microsoft JhengHei',sans-serif;background:var(--wash);color:var(--ink);transition:background .75s,color .6s;-webkit-tap-highlight-color:transparent}body[data-theme=night]{--ink:#d7e3d6;--muted:#98aea5;--paper:#142c31;--line:#c9dfd41f;--panel:#132c30db;--accent:#e2b67a;--wash:#11262c;--shadow:0 12px 40px #0003}button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button:disabled{opacity:.5;cursor:default}svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}button:hover{filter:brightness(.94)}[hidden]{display:none!important}#stage{position:fixed;inset:0;background:radial-gradient(ellipse at 55% 40%,#f8f9ef70 0,transparent 70%)}body[data-theme=night] #stage{background:radial-gradient(ellipse at 55% 40%,#30495577 0,transparent 70%)}#stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;outline:none}#stage canvas:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}.eyebrow{font-size:10px;letter-spacing:.19em;font-weight:650;text-transform:uppercase}.header{position:fixed;z-index:3;top:max(30px,env(safe-area-inset-top));left:38px;pointer-events:none}.brand{display:flex;align-items:center;gap:9px}.brand-mark{width:26px;height:26px;display:grid;grid-template-columns:repeat(2,7px);grid-template-rows:repeat(2,7px);gap:3px;align-content:center;justify-content:center;transform:rotate(-8deg);background:var(--ink);border-radius:5px}.brand-mark i{background:var(--paper);border-radius:50%;box-shadow:0 2px 0 #0002}h1{font-family:'Iowan Old Style','Palatino Linotype','Noto Serif TC','Songti TC',serif;font-size:38px;line-height:1.38;letter-spacing:.025em;font-weight:600;margin:25px 0 12px}h1 .second{font-size:32px}.intro{font-size:12px;line-height:1.9;letter-spacing:.055em;color:var(--muted);margin:0}.top-actions{position:fixed;right:32px;top:max(32px,env(safe-area-inset-top));display:flex;gap:10px;align-items:center;z-index:5}.mode{padding:5px;border:1px solid var(--line);border-radius:40px;background:var(--panel);backdrop-filter:blur(16px);display:flex;box-shadow:var(--shadow)}.mode button{padding:9px 14px;border-radius:30px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;white-space:nowrap}.mode button svg{width:16px;height:16px}.mode button[aria-pressed=true]{background:var(--ink);color:var(--paper)}.round{display:grid;place-items:center;width:44px;height:44px;background:var(--panel);border-radius:50%;border:1px solid var(--line);backdrop-filter:blur(12px);box-shadow:var(--shadow)}.side-actions{position:fixed;right:30px;top:44%;display:flex;flex-direction:column;gap:9px;z-index:4}.zoom{border:1px solid var(--line);border-radius:25px;background:var(--panel);backdrop-filter:blur(15px);overflow:hidden;box-shadow:var(--shadow)}.zoom button{width:44px;height:42px;display:grid;place-items:center}.zoom button+button{border-top:1px solid var(--line)}.round[aria-pressed=true]{background:var(--ink);color:var(--paper)}.side-actions .separator{height:4px}.bottom{position:fixed;bottom:max(29px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:7px;background:var(--panel);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);z-index:5;white-space:nowrap}.bottom .view{font-size:12px;padding:12px 17px;border-radius:12px;display:flex;align-items:center;gap:7px}.view svg{width:17px;height:17px}.view[aria-pressed=true]{color:var(--paper);background:var(--ink)}.bottom .bar{height:26px;width:1px;background:var(--line);margin:0 4px}.motion{padding:10px 12px;display:flex;align-items:center;gap:7px;font-size:12px}.motion svg{width:17px;height:17px}.motion[aria-pressed=true] .pulse{animation:breathe 2s infinite}.note-left{position:fixed;bottom:32px;left:38px;z-index:3;pointer-events:none}.note-left .micro{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.1em;color:var(--muted)}.status{display:flex;align-items:center;gap:7px;font-size:10px;margin-bottom:9px;letter-spacing:.04em}.status-dot{height:6px;width:6px;background:#7a9864;border-radius:50%;box-shadow:0 0 0 4px #7a986417}body[data-theme=night] .status-dot{background:#d8ad69;box-shadow:0 0 0 4px #d8ad6917}.info-right{position:fixed;right:34px;bottom:34px;text-align:right;font-size:10px;color:var(--muted);line-height:1.8;letter-spacing:.02em;z-index:3;pointer-events:none}.hint{position:fixed;left:50%;bottom:112px;transform:translateX(-50%);color:var(--muted);font-size:11px;letter-spacing:.06em;display:flex;align-items:center;gap:8px;pointer-events:none;transition:opacity 1s;z-index:3;white-space:nowrap}.hint.used{opacity:0}.hint svg{width:15px;height:15px}.label{position:absolute;left:0;top:0;z-index:2;pointer-events:none;color:var(--ink);font-size:11px;font-weight:600;padding:7px 10px;background:var(--panel);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:8px;white-space:nowrap}.label:after{content:'';height:22px;width:1px;background:var(--ink);opacity:.4;position:absolute;left:50%;top:100%}.label small{font-size:9px;display:block;font-weight:400;color:var(--muted);margin-top:3px}.guess-badge{position:fixed;right:32px;top:98px;font-size:11px;color:var(--accent);padding:8px 12px;border:1px dashed var(--accent);background:var(--panel);border-radius:9px;z-index:4}.loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:20;background:var(--wash);text-align:center;padding:30px}.loading h2{font-size:18px;letter-spacing:.06em;margin:22px 0 8px;font-weight:500}.loading p{font-size:12px;line-height:1.9;color:var(--muted);max-width:360px}.load-mark{width:48px;height:48px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;font-size:26px;animation:breathe 1.7s infinite}.loading small{color:var(--muted);font-size:10px}.retry{margin-top:12px;background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:12px}.dialog{width:min(540px,calc(100% - 30px));max-height:84dvh;overflow:auto;border:1px solid var(--line);border-radius:24px;background:var(--paper);color:var(--ink);padding:30px;box-shadow:0 30px 100px #0004}.dialog::backdrop{background:#18342c66;backdrop-filter:blur(6px)}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:15px}.dialog h2{font-family:'Songti TC',serif;font-size:25px;font-weight:600;line-height:1.45;margin:12px 0 18px}.dialog h3{font-size:13px;margin:22px 0 8px;font-weight:650}.dialog p{font-size:12px;color:var(--muted);line-height:1.9;margin:8px 0}.dialog .strong{color:var(--ink)}.dialog .rule{height:1px;background:var(--line);margin:23px 0}.evidence{display:grid;grid-template-columns:44px 1fr;gap:10px;margin:15px 0}.evidence span{color:var(--accent);font-size:10px;letter-spacing:.05em;padding-top:3px}.evidence p{margin:0}.check{display:flex;gap:10px;align-items:center;padding:13px 14px;border:1px dashed var(--accent);border-radius:10px;font-size:12px;cursor:pointer;margin:20px 0;color:var(--accent)}.check input{accent-color:var(--accent);width:16px;height:16px}.keyboard{font-family:ui-monospace,monospace;font-size:11px;line-height:2.2;color:var(--muted)}kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--ink);font-family:inherit;font-size:10px}.dialog .foot{font-size:10px;color:var(--muted);line-height:1.9}.dialog a{color:var(--ink);text-decoration-color:var(--muted);text-underline-offset:3px}@keyframes breathe{0%,100%{opacity:1}50%{opacity:.45}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media(max-width:1150px){.note-left{bottom:111px}.info-right{bottom:112px}h1{font-size:34px}.header{left:27px}.note-left{left:27px}}@media(max-width:700px){.header{left:20px;top:max(21px,env(safe-area-inset-top));}.brand{gap:7px}.eyebrow{font-size:8px;letter-spacing:.14em}.brand-mark{width:22px;height:22px;grid-template-columns:repeat(2,5px);grid-template-rows:repeat(2,5px)}h1{font-size:28px;margin:20px 0 6px;line-height:1.25}h1 .second{font-size:25px}.intro{font-size:10px;line-height:1.8}.intro .desktop{display:none}.top-actions{right:16px;top:max(20px,env(safe-area-inset-top));gap:7px}.mode{padding:3px}.mode button{padding:7px 10px;font-size:10px;gap:4px}.mode button svg{width:14px;height:14px}.top-actions .round{width:35px;height:35px}.top-actions .round svg{width:17px;height:17px}.side-actions{right:14px;top:42%;gap:8px}.side-actions .round{width:38px;height:38px}.side-actions .zoom button{width:38px;height:37px}.side-actions svg{width:17px;height:17px}.bottom{width:calc(100% - 28px);max-width:440px;bottom:max(20px,env(safe-area-inset-bottom));padding:5px;border-radius:16px;gap:2px;justify-content:space-between}.bottom .view{font-size:10px;padding:11px 9px;gap:5px;flex:1;justify-content:center}.bottom .view svg{width:14px;height:14px}.bottom .bar{margin:0 2px;height:24px}.motion{font-size:10px;padding:10px 8px;gap:4px}.motion svg{width:14px;height:14px}.note-left{left:20px;bottom:100px}.note-left .micro{font-size:8px;letter-spacing:.08em}.status{font-size:9px;margin-bottom:7px}.info-right{right:20px;bottom:98px;font-size:8px}.info-right .desktop{display:none}.hint{bottom:141px;font-size:9px;letter-spacing:0}.hint svg{width:13px;height:13px}.guess-badge{right:16px;top:72px;font-size:9px}.dialog{padding:23px;border-radius:20px}.label{font-size:10px}.label small{font-size:8px}.dialog h2{font-size:23px}.dialog p{font-size:12px}}
+@media(max-height:520px) and (orientation:landscape){h1{font-size:24px;margin-top:13px}h1 .second{font-size:22px}.intro{display:none}.header{top:18px;left:20px}.top-actions{top:18px;right:20px}.bottom{bottom:15px}.note-left,.info-right{display:none}.hint{bottom:87px}.side-actions{top:32%;right:15px;gap:4px}.side-actions .separator{height:0}.side-actions .round{width:34px;height:34px}.zoom button{width:34px;height:31px}}
+@media(max-width:360px){.bottom .view svg{display:none}.bottom .view{padding:11px 6px}.mode button{padding:7px 8px}.top-actions{gap:5px}.brand .eyebrow{font-size:7px}}
+</style>
+</head>
+<body data-theme="day">
+<div id="stage"><div id="labelCurve" class="label" hidden>沿湖彎道<small>森林在左，湖水在右</small></div><div id="labelPalms" class="label" hidden>棕櫚樹與球燈<small>保留照片中的高低比例</small></div><div id="labelPier" class="label" hidden>遠岸建築與高桅杆<small>遠景壓縮・背面推測</small></div></div>
+<header class="header"><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="eyebrow">Brick memories / 001</span></div><h1>把湖畔，<br><span class="second">留在積木裡。</span></h1><p class="intro">日月潭 · 水社湖畔<br><span class="desktop">五張照片，拼回一段有光的風景。</span></p></header>
+<div class="top-actions"><div class="mode" role="group" aria-label="日夜切換"><button id="day" aria-pressed="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/></svg>日景</button><button id="night" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M20 14A8.5 8.5 0 0 1 10 4a8.5 8.5 0 1 0 10 10Z"/></svg>夜景</button></div><button class="round" id="about" title="重建說明與推測範圍" aria-label="重建說明與推測範圍"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg></button></div>
+<div class="guess-badge" id="guessBadge" hidden>橙色框線：照片未涵蓋的推測區域</div>
+<nav class="side-actions" aria-label="視角控制"><div class="zoom"><button id="plus" title="放大" aria-label="放大"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button><button id="minus" title="縮小" aria-label="縮小"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button></div><button id="home" class="round" title="回到原始視角" aria-label="回到原始視角"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M6 9v11h12V9M10 20v-6h4v6"/></svg></button><div class="separator"></div><button id="orbit" class="round" aria-label="自動環繞" title="自動環繞" aria-pressed="false"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="4"/><path d="m17 5 4 5-5 1M12 8v8"/></svg></button><button id="labels" class="round" aria-label="顯示場景標註" title="顯示場景標註" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 4h16v12h-8l-5 4v-4H4Z"/><path d="M8 8h8M8 12h5"/></svg></button></nav>
+<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M8 12V6a2 2 0 0 1 4 0v5-2a2 2 0 0 1 4 0v3-1a2 2 0 0 1 4 0v5c0 4-3 6-6 6s-5-2-6-4l-4-5a2 2 0 0 1 3-2l1 1Z"/></svg>拖曳旋轉 · 滾輪 / 雙指縮放 · 右鍵 / 雙指平移</div>
+<div class="bottom" role="group" aria-label="場景視角與動畫"><button class="view" data-view="overview" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 8v9l9 5 9-5V8M12 13v9"/></svg>積木全景</button><button class="view" data-view="shore" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17c3-3 5 3 8 0s5 3 8 0M6 14V4M3 8l3-4 3 4M11 14l4-6 5 6"/></svg>湖畔視角</button><button class="view" data-view="curve" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M6 21c0-9 12-7 12-13 0-3-3-5-6-5M12 21c0-6 9-6 9-13M4 3h5M3 8h5"/></svg>彎道散步</button><span class="bar"></span><button class="motion" id="motion" aria-pressed="true"><svg id="motionIcon" class="pulse" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></svg><span id="motionLabel">暫停小船</span></button></div>
+<div class="note-left"><div class="status"><span class="status-dot"></span><span id="statusText">日光湖畔 · 依五張照片重建</span></div><div class="micro">PHOTO → VOLUME / INTERACTIVE EDITION</div></div><div class="info-right"><span id="pieceCount">—</span> 個積木單元<br><span class="desktop">幾何重建，非精密測繪 · </span>Three.js</div>
+<dialog class="dialog" id="aboutDialog"><div class="dialog-top"><span class="eyebrow">Reconstruction notes</span><button class="round" id="closeAbout" aria-label="關閉說明"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><h2>風景有依據，<br>看不見的地方不假裝知道。</h2><p class="strong">以你提供的五張湖畔照片，組成可從各方向查看的積木模型。主要物件皆為有厚度的三維幾何，未載入、貼上或傳送原照片。</p><div class="rule"></div><div class="evidence"><span>依照片</span><p>灰白格紋步道、較低的木棧道、綠色欄杆與棕色扶手；沿岸的高棕櫚樹、較矮的球形路燈；左側森林、彎道與長椅；右側綠湖水，以及遠岸白色建築、小屋與高桅杆。</p></div><div class="evidence"><span>推測</span><p>建物背面、屋頂設備、山坡背面與被遮住的岸線；不同拍攝位置之間的連接方式。遠山與對岸距離為了放入模型而壓縮，物件數量及尺寸為目測近似，不能用於導航或工程量測。</p></div><div class="evidence"><span>創作</span><p>夜間路燈、窗戶亮光與星星是設計的夜景，不是照片所記錄的狀態。積木小船的航線、配色與動作為場景動畫；人物為匿名積木人，沒有重建任何人的肖像。</p></div><label class="check"><input id="showGuesses" type="checkbox">用橙色框線顯示主要推測區域</label><h3>操作方式</h3><p>滑鼠拖曳／單指拖曳：旋轉。滾輪／雙指捏合：縮放。滑鼠右鍵／雙指移動：平移。房屋圖示：回到原始視角。底部可切換三種預設視角。</p><div class="keyboard">鍵盤先點一下場景：<kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> 旋轉 · <kbd>+</kbd> <kbd>−</kbd> 縮放 · <kbd>Home</kbd> 重設</div><div class="rule"></div><p class="foot">單頁 HTML · 無 API key · 無後端 · 無追蹤<br>首次開啟需連網載入固定版本 Three.js r160（cdnjs / jsDelivr 備援）。如附件預覽不執行 JavaScript，請在完整瀏覽器開啟。此版使用自訂滑鼠及多點觸控控制器。</p><p class="foot">Engine: <a href="https://threejs.org/" target="_blank" rel="noopener noreferrer">Three.js</a> · MIT License · © 2010–2023 Three.js Authors<br>Scene design & code · Brick Memories / 001</p></dialog>
+<div class="loading" id="loading" role="status" aria-live="polite"><div class="load-mark">▦</div><h2>正在拼起湖畔…</h2><p>載入三維引擎與積木場景。<br>照片不會上傳，也不需要登入或 API key。</p><small>首次開啟需要網路連線</small></div>
+<noscript><div class="loading"><h2>請啟用 JavaScript</h2><p>互動三維場景需要 JavaScript 與 WebGL。</p></div></noscript>
+<script>
+/* Sun Moon Lake · Brick Memory | Original procedural scene, Three.js r160.
+   All source photographs remain local: no photo textures, network uploads or analytics.
+   Units are artistic proportions, not surveyed metres. */
+(function () {
+'use strict';
+const $ = id => document.getElementById(id);
+const boot = () => {
+const THREE=window.THREE;
+if(!THREE) return showError('3D 引擎尚未載入','請連上網路後重新開啟。此頁只下載 Three.js 程式庫，不會上傳你的照片。');
+const stage=$('stage');
+let renderer;
+try { renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'}); }
+catch(e){ return showError('瀏覽器未啟用 WebGL','請用支援 WebGL 的 Safari、Chrome 或 Edge 開啟 HTML，並確認硬體加速已啟用。'); }
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.65));
+renderer.setSize(stage.clientWidth,stage.clientHeight);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.13;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.domElement.setAttribute('aria-label','日月潭湖畔三維積木場景。拖曳旋轉、雙指縮放，或使用旁邊的視角按鈕。');
+renderer.domElement.setAttribute('tabindex','0');
+stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(36,stage.clientWidth/stage.clientHeight,.2,850);
+const model=new THREE.Group();scene.add(model);
+const hemi=new THREE.HemisphereLight(0xdbeff5,0x777254,2.4);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xffefd2,3.4);sun.position.set(-24,48,22);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-46,right:46,top:42,bottom:-36,near:.5,far:130});
+sun.shadow.normalBias=.055;sun.shadow.bias=-.00016;sun.shadow.radius=3;sun.target.position.set(0,0,0);scene.add(sun,sun.target);
+const fill=new THREE.DirectionalLight(0xcdeaf0,.9);fill.position.set(35,21,-25);scene.add(fill);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.ShadowMaterial({color:0x233c36,opacity:.13}));
+floor.rotation.x=-Math.PI/2;floor.position.y=-2.72;floor.receiveShadow=true;scene.add(floor);
+const mat=new THREE.MeshStandardMaterial({roughness:.82,metalness:0,flatShading:true});
+const batches=new Map();const dummy=new THREE.Object3D();const color=new THREE.Color();
+const geoms={box:new THREE.BoxGeometry(1,1,1),stud:new THREE.CylinderGeometry(.5,.5,1,10),orb:new THREE.SphereGeometry(.5,12,8),leaf:new THREE.IcosahedronGeometry(.5,0)};
+let rng=314159;const rnd=()=>{rng=(Math.imul(rng,1664525)+1013904223)>>>0;return rng/4294967296;};
+const pick=a=>a[Math.floor(rnd()*a.length)];
+function add(kind,x,y,z,sx,sy,sz,c,ry=0,rz=0,rx=0){
+ if(!batches.has(kind))batches.set(kind,[]);
+ batches.get(kind).push({x,y,z,sx,sy,sz,c,ry,rz,rx});
+}
+const box=(x,y,z,sx,sy,sz,c,ry=0,rz=0,rx=0)=>add('box',x,y,z,sx,sy,sz,c,ry,rz,rx);
+const stud=(x,y,z,r,h,c)=>add('stud',x,y,z,r*2,h,r*2,c);
+function block(x,y,z,sx,sy,sz,c,studs=false){
+ box(x,y,z,sx,sy,sz,c);
+ if(studs){const nx=Math.max(1,Math.round(sx/1.1)),nz=Math.max(1,Math.round(sz/1.1));
+ for(let a=0;a<nx;a++)for(let b=0;b<nz;b++)stud(x+(a-(nx-1)/2)*sx/nx,y+sy/2+.06,z+(b-(nz-1)/2)*sz/nz,Math.min(.26,sx/nx*.3,sz/nz*.3),.13,c);}
+}
+function beam(a,b,w,d,c){const va=new THREE.Vector3(...a),vb=new THREE.Vector3(...b);const dir=vb.clone().sub(va);const mid=va.clone().add(vb).multiplyScalar(.5);const q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().normalize());const e=new THREE.Euler().setFromQuaternion(q);add('box',mid.x,mid.y,mid.z,w,dir.length(),d,c,e.y,e.z,e.x);}
+function mesh(geom,material,x=0,y=0,z=0,parent=model){const m=new THREE.Mesh(geom,material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
+function extrudeXZ(points,depth,y,material,parent=model){
+ const s=new THREE.Shape();points.forEach((p,i)=>i?s.lineTo(p[0],-p[1]):s.moveTo(p[0],-p[1]));s.closePath();
+ const geo=new THREE.ExtrudeGeometry(s,{depth,bevelEnabled:false,curveSegments:4});geo.rotateX(-Math.PI/2);
+ return mesh(geo,material,0,y,0,parent);
+}
+function roundedBase(w,d,r,h,y,c){const s=new THREE.Shape();s.moveTo(-w/2+r,-d/2);s.lineTo(w/2-r,-d/2);s.quadraticCurveTo(w/2,-d/2,w/2,-d/2+r);s.lineTo(w/2,d/2-r);s.quadraticCurveTo(w/2,d/2,w/2-r,d/2);s.lineTo(-w/2+r,d/2);s.quadraticCurveTo(-w/2,d/2,-w/2,d/2-r);s.lineTo(-w/2,-d/2+r);s.quadraticCurveTo(-w/2,-d/2,-w/2+r,-d/2);
+ const g=new THREE.ExtrudeGeometry(s,{depth:h,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.18,bevelThickness:.18,curveSegments:4});g.rotateX(-Math.PI/2);
+ return mesh(g,new THREE.MeshStandardMaterial({color:c,roughness:.82}),0,y,0);
+}
+roundedBase(66,54,2.8,1.45,-2.45,0x25493f);roundedBase(65.6,53.6,2.5,.4,-.95,0x73947c);roundedBase(65.2,53.2,2.3,.65,-.52,0x8e9b77);
+// The central water volume is thick geometry, not a photographic plane.
+const waterMat=new THREE.MeshStandardMaterial({color:0x2b847e,roughness:.3,metalness:.12});
+const waterPoly=[[-28,12.15],[-27,3],[-21,-6],[-15,-12],[-6,-18.2],[30,-18.2],[31.5,-16],[31.5,12.15]];
+extrudeXZ(waterPoly,.62,.02,waterMat);
+function inside(x,z,poly=waterPoly){let ok=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const a=poly[i],b=poly[j];if((a[1]>z)!=(b[1]>z)&&x<(b[0]-a[0])*(z-a[1])/(b[1]-a[1])+a[0])ok=!ok;}return ok;}
+const waterTiles=[];
+for(let x=-28;x<32;x+=1.25)for(let z=-18;z<12;z+=1.25){if(inside(x,z)&&inside(x+.63,z+.63)&&inside(x-.63,z-.63))waterTiles.push([x,z]);}
+const tileMat=new THREE.MeshStandardMaterial({roughness:.35,metalness:.13});
+const tiles=new THREE.InstancedMesh(new THREE.BoxGeometry(1.21,.045,1.21),tileMat,waterTiles.length);
+const shades=[0x398f85,0x35887f,0x438f86,0x3c9389,0x2e827c,0x378c84];
+waterTiles.forEach(([x,z],i)=>{dummy.position.set(x,.665+(rnd()-.5)*.025,z);dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);dummy.updateMatrix();tiles.setMatrixAt(i,dummy.matrix);tiles.setColorAt(i,new THREE.Color(pick(shades)));});
+tiles.receiveShadow=true;model.add(tiles);
+const glintMat=new THREE.MeshBasicMaterial({color:0xe1f1d9,transparent:true,opacity:.4});
+const glints=[];const glintGeo=new THREE.BoxGeometry(1,.015,.065);
+for(let i=0;i<110;i++){const x=-21+rnd()*49,z=-16+rnd()*26;if(!inside(x,z))continue;const m=mesh(glintGeo,glintMat,x,.73,z);m.scale.x=.2+rnd()*.65;m.castShadow=false;m.userData={phase:rnd()*Math.PI*2,base:m.scale.x};glints.push(m);}
+// Front terrace: alternating gray/cream paving, narrow dark cross joints, wood deck.
+box(0,.83,19.55,63,1.5,11.05,0x72766a);
+for(let x=-31;x<31;x+=2.4)for(let z=15;z<24.6;z+=2.4){
+ const ix=Math.round((x+31)/2.4),iz=Math.round((z-15)/2.4);
+ box(x+1.18,1.6,z+1.17,2.29,.14,2.29,(ix+iz)%2?0xc4c8bc:0xe2e0d0);
+ box(x+1.18,1.681,z+1.17,.31,.024,2.28,0xa2aaa0);box(x+1.18,1.695,z+1.17,2.28,.023,.31,0xa2aaa0);
+}
+box(0,.76,13.58,63,.55,2.8,0x766044);
+for(let x=-31;x<31;x+=.39)box(x+.17,1.075,13.58,.34,.13,2.75,pick([0xa58d6b,0x9b8362,0xb19a78,0xa18b6f]));
+box(0,1.54,15.02,62.7,.08,.12,0xe4be59);
+box(0,1.19,14.87,62.8,.18,.2,0xb8b7a6);
+function rail(points,baseY=1.12,cream=false){
+ const col=cream?0x99a99d:0x315d4b;const wood=cream?0x9a8664:0x8a6d50;
+ for(let k=0;k<points.length-1;k++){
+ const a=points[k],b=points[k+1];let length=Math.hypot(b[0]-a[0],b[1]-a[1]);
+ beam([a[0],baseY+1.55,a[1]],[b[0],baseY+1.55,b[1]],.18,.2,wood);
+ beam([a[0],baseY+.26,a[1]],[b[0],baseY+.26,b[1]],.12,.12,col);
+ beam([a[0],baseY+1.28,a[1]],[b[0],baseY+1.28,b[1]],.09,.1,col);
+ const n=Math.ceil(length/.45);for(let i=0;i<=n;i++){const t=i/n;box(a[0]+(b[0]-a[0])*t,baseY+.79,a[1]+(b[1]-a[1])*t,.063,1.22,.065,col);}
+ const p=Math.max(1,Math.ceil(length/3.3));for(let i=0;i<p;i++){const t=i/p;box(a[0]+(b[0]-a[0])*t,baseY+.81,a[1]+(b[1]-a[1])*t,.2,1.62,.2,col);}
+ }
+ const a=points.at(-1);box(a[0],baseY+.81,a[1],.2,1.62,.2,col);
+}
+rail([[-31.4,12.14],[31.4,12.14]]);
+// The curve is inferred as a continuous shore between the different photographs.
+const pathPoints=[[-29,12.9],[-28.6,7],[-27,2],[-24,-3],[-20,-7.5],[-15,-11.5],[-9.5,-15.8],[-4.5,-18.2]];
+const curve=new THREE.CatmullRomCurve3(pathPoints.map(p=>new THREE.Vector3(p[0],1.3,p[1])));
+const outer=[],inner=[];
+for(let i=0;i<=60;i++){const t=i/60,p=curve.getPoint(t),v=curve.getTangent(t);const n=new THREE.Vector3(-v.z,0,v.x);inner.push([p.x+n.x*1.75,p.z+n.z*1.75]);outer.push([p.x-n.x*1.75,p.z-n.z*1.75]);}
+const pathMat=new THREE.MeshStandardMaterial({color:0xb9bbae,roughness:1});extrudeXZ([...outer,...[...inner].reverse()],.32,1.08,pathMat);
+const lakeEdge=inner; // tangent runs north; its right-hand side is the lake.
+rail(lakeEdge.filter((p,i)=>i%3===0),1.4);
+rail(outer.filter((p,i)=>i%6===0),1.4);
+for(let i=0;i<60;i++){const a=inner[i],b=inner[i+1];beam([a[0],1.43,a[1]],[b[0],1.43,b[1]],.07,.34,0xae7c62);const o=outer[i],q=outer[i+1];beam([o[0],1.43,o[1]],[q[0],1.43,q[1]],.07,.24,0xae7c62);}
+function bench(x,z,ry=0){const local=(lx,y,lz,sx,sy,sz,c)=>{const xx=x+lx*Math.cos(ry)+lz*Math.sin(ry),zz=z-lx*Math.sin(ry)+lz*Math.cos(ry);box(xx,y,zz,sx,sy,sz,c,ry);};
+ [-1,1].forEach(a=>{local(a,1.87,0,.13,.86,.6,0x4c584e);local(a,2.47,.32,.11,1.12,.12,0x4c584e);});
+ for(let i=0;i<3;i++){local(0,2.29,-.28+i*.23,2.8,.13,.18,0xb0865c);local(0,2.68+i*.2,.36,2.8,.15,.1,0xb38e66);}}
+bench(-25.3,5.7,-.22);bench(-23.4,1.1,-.6);bench(-14,21.6,0);bench(12.4,21.6,0);
+block(-27.1,1.61,6.4,2.2,.6,1.5,0xb4b8a8);block(-27.1,2,6.4,1.9,.22,1.2,0x729053,true);
+block(-25.2,1.62,1.5,2.2,.6,1.5,0xb4b8a8);block(-25.2,2.03,1.5,1.9,.25,1.2,0x759658,true);
+// Terraced forests: real solid blocks and volumetric tree crowns.
+const greens=[0x355940,0x426649,0x4b704b,0x567a4d,0x668352,0x75915a];
+function broadTree(x,y,z,h=4,sc=1){
+ box(x,y+h*.28,z,.3*sc,h*.55,.3*sc,0x6f6146);
+ block(x,y+h*.65,z,1.95*sc,h*.44,1.75*sc,pick(greens),true);
+ block(x-.47*sc,y+h*.86,z+.2*sc,1.24*sc,h*.3,1.4*sc,pick(greens),true);
+ block(x+.61*sc,y+h*.56,z+.25*sc,1.25*sc,h*.3,1.27*sc,pick(greens),true);
+}
+const hillCells=[];
+for(let x=-30;x<-3;x+=2.9)for(let z=-23.4;z<8;z+=2.9){
+ // Land stays on the forest side of the curving path.
+ let edge= -29 + (8-z)*.67;
+ if(z<-16)edge=-2;
+ if(x>edge-2.8)continue;
+ const h=2+11*Math.exp(-((x+24)**2/150+(z+12)**2/230))+(rnd()-.5)*1.3;
+ block(x,.6+h/2,z,2.92,h,2.92,pick([0x677a55,0x70855b,0x5f7650]));hillCells.push({x,z,h});
+}
+hillCells.forEach(({x,z,h})=>{if(rnd()>.2)broadTree(x,.6+h,z,2.5+rnd()*2.6,.75+rnd()*.3);});
+// Distant ridge: compressed depth; hidden rear slopes are interpretive.
+for(let x=-9;x<31;x+=3.2){const h=3+Math.max(0,6.5*Math.sin((x+12)/14))+rnd()*1.2;block(x,.6+h/2,-23.05,3.25,h,5.15,0x6a8980,true);if(rnd()>.3)broadTree(x,.6+h,-23.1,2.5,.75);}
+// Near palm row, built from segmented trunk bricks and many solid leaflets.
+function palm(x,z,h,phase=0){
+ const y=1.73;block(x,1.66,z,2.8,.14,2.8,0x687448);block(x,1.78,z,2.3,.13,2.3,0x7d8e53,true);
+ for(let i=0;i<Math.ceil(h/.48);i++){const t=i/Math.ceil(h/.48);const r=.59-t*.21;box(x+Math.sin(t*1.6)*.22,y+i*.48,z,r*1.8,.47,r*1.75,pick([0x75634a,0x655842,0x897456]),i*.53);if(i%4===0)stud(x+Math.sin(t*1.6)*.22,y+i*.48+.255,z,r,.08,0x8c7755);}
+ const top=y+h;
+ for(let k=0;k<9;k++){const ang=k*Math.PI*2/9+phase;
+ for(let j=0;j<5;j++){
+ const t=j/4,r=.3+t*3.7,xx=x+.2+Math.cos(ang)*r,zz=z+Math.sin(ang)*r,yy=top+1.1*Math.sin(t*Math.PI)-t*.55;
+ const width=(1-t)*.7+.17;box(xx,yy,zz,1.05,.17,width, k%2?0x416643:0x597b45,-ang,0,(t-.4)*.12);
+ for(let side of [-1,1]){const la=ang+side*.74,px=xx+Math.cos(ang+Math.PI/2)*side*.38,pz=zz+Math.sin(ang+Math.PI/2)*side*.38;box(px,yy-.12, pz,.84*(1-t*.62),.12,.18,side>0?0x5c7e47:0x3d6143,-la,0,.06);}
+ }
+ }
+ for(let k=0;k<4;k++){const a=k*Math.PI/2;box(x+Math.cos(a)*.5,top-.3,z+Math.sin(a)*.5,.48,.64,.48,0x796746);}
+ // Fern-like tufts on the trunk, observed in the supplied photos.
+ for(let k=0;k<3;k++){const yy=y+h*(.26+k*.22);for(let a=0;a<4;a++){const th=a*1.57+k;box(x+Math.cos(th)*.56,yy,z+Math.sin(th)*.56,.95,.12,.24,0x5e7c3f,-th,0,.12);}}
+}
+[-26,-14,-2,10,24].forEach((x,i)=>palm(x,18.35,8.7+(i%3)*.9,i*.7));
+const bulbs=[],points=[],nightWindows=[];
+const bulbMat=new THREE.MeshStandardMaterial({color:0xf0e7c8,roughness:.43,emissive:0xffce7d,emissiveIntensity:0});
+function lamp(x,z){
+ const base=1.62,h=4.7;
+ box(x,base+.1,z,.62,.22,.62,0x74674f);stud(x,base+.36,z,.18,.48,0x91734a);stud(x,base+h/2,z,.11,h,0x967549);stud(x,base+h-.2,z,.3,.13,0x434b3d);
+ const m=mesh(new THREE.SphereGeometry(.43,12,8),bulbMat,x,base+h,z);bulbs.push(m);
+ for(let i=0;i<6;i++){const a=i*Math.PI/3;beam([x+Math.cos(a)*.18,base+h-.48,z+Math.sin(a)*.18],[x+Math.cos(a)*.58,base+h-.11,z+Math.sin(a)*.58],.055,.065,0x3a4238);}
+ stud(x,base+h-.1,z,.56,.08,0x394336);const p=new THREE.PointLight(0xffd68c,0,10,2);p.position.set(x,base+h,z);scene.add(p);points.push(p);
+ const pool=mesh(new THREE.CylinderGeometry(1.4,1.6,.022,20),new THREE.MeshBasicMaterial({color:0xffcc77,transparent:true,opacity:0,depthWrite:false}),x,1.72,z);pool.castShadow=false;pool.userData.isPool=true;bulbs.push(pool);
+}
+[-30,-21,-8,4,17,30].forEach(x=>lamp(x,15.72));lamp(-22,-.3);
+// Geometric photo-scale pedestrians; stylised anonymous figures, not likenesses.
+function person(x,z,c,ry=0,hat=false){const y=z>15?1.76:1.17;const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=ry;model.add(g);
+ const pm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.8});
+ const part=(sx,sy,sz,c,x,y,z)=>mesh(new THREE.BoxGeometry(sx,sy,sz),pm(c),x,y,z,g);
+ part(.49,.65,.29,c,0,1.09,0);part(.34,.38,.34,0xcfac80,0,1.62,0);part(.37,.12,.36,0x3c3730,0,1.84,0);
+ part(.16,.7,.18,0x39423b,-.13,.43,.07);part(.16,.7,.18,0x39423b,.13,.43,-.06);
+ part(.17,.2,.29,0x333e37,-.13,.11,.13);part(.17,.2,.29,0x333e37,.13,.11,.02);
+ part(.14,.58,.15,c,-.33,1.09,.08);part(.14,.58,.15,c,.33,1.09,-.08);
+ if(hat){part(.65,.1,.57,0xb6a07a,0,1.94,0);part(.41,.22,.4,0xb6a07a,0,2.07,0);}
+}
+person(-8,20.9,0x303936,-.1,true);person(-6.65,21.2,0x847d61,-.1);person(1.5,13.5,0x425d72,.5);person(5.2,13.6,0xcbcab2,-.4);person(-13.2,13.5,0x65654f,1.1);
+// Opposite shore and compact white waterfront buildings, placed beyond the water.
+box(15,.82,-19.25,32,1.45,3.6,0x8c967c);box(15,1.61,-17.72,31,.16,.55,0xd0cdbc);
+const windowsMat=new THREE.MeshStandardMaterial({color:0x48666a,roughness:.35,emissive:0xffbd6b,emissiveIntensity:0});
+function hotel(x,z,w,d,h,stories,balcony=false){
+ block(x,1.67+h/2,z,w,h,d,0xe4e5d7,true);block(x,1.69+h,z,w+.24,.23,d+.3,0xb5bcad);
+ for(let k=0;k<stories;k++){const yy=2.25+k*(h-.8)/stories;for(let col=0;col<Math.floor(w/1.12);col++){const xx=x-w/2+.6+col*1.12;const m=mesh(new THREE.BoxGeometry(.54,.56,.06),windowsMat,xx,yy,z+d/2+.046);nightWindows.push(m);}
+ if(balcony){box(x,yy-.4,z+d/2+.31,w+.13,.13,.75,0xc6cdbd);box(x,yy-.17,z+d/2+.65,w+.12,.08,.07,0x71877d);}
+ }
+ // Rear windows and roof service volumes are reasonable completions, not observations.
+ for(let k=0;k<stories;k++)for(let j=0;j<Math.floor(w/1.4);j++)box(x-w/2+.7+j*1.4,2.25+k*(h-.8)/stories,z-d/2-.025,.54,.55,.05,0x7b8c85);
+ box(x+w*.19,1.95+h,z-.3,w*.35,.55,d*.38,0xc9cbbb);
+}
+hotel(3.9,-20.1,7.6,3.25,7.4,5,true);hotel(14,-19.1,4.8,3.2,6.4,4,false);hotel(26,-20,5.3,3.5,8.2,6,true);
+box(14,12.2,-19.1,.13,9.0,.13,0x939c93);box(14,10,-19.1,1.0,.15,.15,0x8a978d);
+add('stud',14.18,10.6,-18.9,.67,.11,.67,0xacb2a2,0,Math.PI/2,Math.PI/2);box(14,16.9,-19.1,.045,1.1,.045,0xb9bdae);
+// Small dark gabled structure near the mast.
+block(20.5,3.2,-18.2,5,3.0,3.3,0x747b6d);
+for(let i=0;i<3;i++){box(18.9+i*1.55,5.1,-18.2,1.2,.22,4,0x556557,0,0,.6);box(19.55+i*1.55,5.1,-18.2,1.2,.22,4,0x526453,0,0,-.6);}
+// Floating hut and short jetties, observed in the second photo.
+box(11,.99,-13.4,10,.38,1.5,0x665f4b);box(6.7,1.2,-13.35,2.7,.35,2.25,0x7b7059);box(6.7,2.02,-13.35,2.25,1.3,1.9,0xc4c3a9);
+box(6.7,2.83,-12.83,2.8,.17,1.27,0x7e8169,0,0,.35);box(6.7,2.83,-13.89,2.8,.17,1.27,0x858570,0,0,-.35);
+box(7.5,1.9,-12.37,.55,1.16,.06,0x4b6156);
+for(let x=17;x<=28;x+=3.4)box(x,.85,-14.2,2.5,.28,4.3,0x82816b);
+// Teal signs are modelled plaques, without fabricating unreadable text from photographs.
+box(-2.9,2,12.18,1.45,.68,.11,0x43766a);box(-3.14,2.06,12.25,.7,.075,.04,0xd7dfc5);box(-2.65,1.89,12.25,.28,.08,.04,0xd7dfc5);
+box(-27.3,3.05,3.25,.16,3.4,.16,0x966d45);box(-27.3,4.1,3.25,.65,1.28,.15,0xe7e4cd);box(-27.3,4.4,3.35,.53,.13,.04,0xaa6b52);
+// Flush static geometry into instanced batches for mobile-friendly draw calls.
+let pieces=0;
+for(const [kind,data]of batches){const b=new THREE.InstancedMesh(geoms[kind],mat,data.length);data.forEach((v,i)=>{dummy.position.set(v.x,v.y,v.z);dummy.rotation.set(v.rx,v.ry,v.rz);dummy.scale.set(v.sx,v.sy,v.sz);dummy.updateMatrix();b.setMatrixAt(i,dummy.matrix);color.set(v.c);b.setColorAt(i,color);});b.castShadow=true;b.receiveShadow=true;b.computeBoundingSphere();b.name='bricks-'+kind;model.add(b);pieces+=data.length;}
+// One animated boat, built entirely out of solids. Its loop and colours are interpretive.
+const boat=new THREE.Group();model.add(boat);
+function boatPart(w,h,d,x,y,z,c){return mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshStandardMaterial({color:c,roughness:.6}),x,y,z,boat);}
+boatPart(3.6,.42,1.62,0,.24,0,0xedead8);boatPart(3.65,.15,1.64,0,.36,0,0x56857a);boatPart(2.5,.87,1.15,-.13,.95,0,0xf0edda);boatPart(2.95,.16,1.43,-.13,1.46,0,0x405f59);
+for(let x of [-.94,-.15,.63]){boatPart(.55,.47,.04,x,1.0,.595,0x4a7376);boatPart(.55,.47,.04,x,1.0,-.595,0x4a7376);}
+boatPart(.12,.6,.12,.8,1.73,0,0x8b8f79);boatPart(.05,.28,.41,.85,1.87,.13,0xcc9862);
+const wake=new THREE.Group();boat.add(wake);const wakeMat=new THREE.MeshBasicMaterial({color:0xc3e8d8,transparent:true,opacity:.45});
+for(let i=0;i<5;i++){const w=mesh(new THREE.BoxGeometry(.11,.025,.9+i*.18),wakeMat,-2.2-i*.49,-.01,0,wake);w.castShadow=false;}
+// Explicitly marked reconstruction zones, revealed on demand.
+const guesses=new THREE.Group();model.add(guesses);guesses.visible=false;
+const guessLine=new THREE.LineBasicMaterial({color:0xd7a263,transparent:true,opacity:.85});
+for(const [x,y,z,w,h,d]of [[4,6,-21.1,9,10,5],[20,7,-21.5,21,13,7],[-20,7,-21.4,22,15,9]]){const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w,h,d)),guessLine);e.position.set(x,y,z);guesses.add(e);}
+const stars=new THREE.Group();scene.add(stars);stars.visible=false;
+const starMat=new THREE.MeshBasicMaterial({color:0xe0e8d5});for(let i=0;i<50;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(.075,.075,.075),starMat);m.position.set((rnd()-.5)*110,25+rnd()*32,-30-rnd()*35);stars.add(m);}
+// No API, analytics, persistence, model downloads, or image textures.
+let isNight=false,animate=!matchMedia('(prefers-reduced-motion: reduce)').matches,elapsed=0,previous=performance.now(),frames=0;
+let isVisible=true;document.addEventListener('visibilitychange',()=>{isVisible=!document.hidden;previous=performance.now();});
+let autoOrbit=false;
+function setNight(on){isNight=on;document.body.dataset.theme=on?'night':'day';$('day').setAttribute('aria-pressed',String(!on));$('night').setAttribute('aria-pressed',String(on));
+ hemi.color.set(on?0x809db8:0xdbeff5);hemi.groundColor.set(on?0x243c43:0x777254);hemi.intensity=on?1.2:2.4;
+ sun.color.set(on?0x99bbdf:0xffefd2);sun.intensity=on?.65:3.4;fill.intensity=on?.45:.9;renderer.toneMappingExposure=on?.93:1.13;
+ bulbMat.emissiveIntensity=on?2.6:0;windowsMat.emissiveIntensity=on?.8:0;points.forEach(p=>p.intensity=on?24:0);bulbs.filter(b=>b.userData.isPool).forEach(b=>b.material.opacity=on?.12:0);
+ waterMat.color.set(on?0x22586a:0x2b847e);tileMat.color.set(on?0x819ba7:0xffffff);glintMat.color.set(on?0x9ebbd5:0xe1f1d9);glintMat.opacity=on?.25:.4;stars.visible=on;
+ $('statusText').textContent=on?'夜色微光 · 想像的夜間燈景':'日光湖畔 · 依五張照片重建';
+}
+function toggleAnimation(){animate=!animate;syncAnimation();}
+function syncAnimation(){$('motion').setAttribute('aria-pressed',String(animate));$('motionLabel').textContent=animate?'暫停小船':'啟動小船';$('motionIcon').innerHTML=animate?'<path d="M9 5v14M15 5v14"/>':'<path d="m9 5 10 7-10 7Z"/>';}
+syncAnimation();
+// Pointer-driven orbit controller: mouse, single-finger orbit, pinch + two-finger pan.
+const target=new THREE.Vector3(0,3.5,0),wantedTarget=target.clone();
+let theta=.68,phi=.87,radius=115,wTheta=theta,wPhi=phi,wRadius=radius;
+const TAU=Math.PI*2;const clamp=THREE.MathUtils.clamp;
+const presets={overview:{t:[0,3.5,0],th:.67,ph:.88,r:112},shore:{t:[-2,3,-6],th:.48,ph:1.35,r:49},curve:{t:[-22,3,-1],th:.21,ph:1.33,r:29}};
+function fitRadius(r){
+ if(r>=100)return r*Math.max(1,(stage.clientHeight/stage.clientWidth)*1.4);
+ return stage.clientWidth<700?r*1.12:r;
+}
+let activePreset='overview';
+function preset(name,instant=false){const p=presets[name];if(!p)return;activePreset=name;wantedTarget.set(...p.t);wTheta=p.th;wPhi=p.ph;wRadius=fitRadius(p.r);autoOrbit=false;$('orbit').setAttribute('aria-pressed','false');
+ // Choose the shortest azimuth path after multiple rotations.
+ theta=wTheta+Math.atan2(Math.sin(theta-wTheta),Math.cos(theta-wTheta));
+ if(instant){target.copy(wantedTarget);theta=wTheta;phi=wPhi;radius=wRadius;}
+ document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===name)));updateCamera(1);
+}
+function changedView(){activePreset='custom';document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed','false'));}
+function zoom(mult){wRadius=clamp(wRadius*mult,9,700);changedView();}
+function pan(dx,dy){const gain=wRadius*.00075;const right=new THREE.Vector3(Math.cos(theta),0,-Math.sin(theta));const fwd=new THREE.Vector3(Math.sin(theta),0,Math.cos(theta));wantedTarget.addScaledVector(right,-dx*gain);wantedTarget.addScaledVector(fwd,-dy*gain);wantedTarget.x=clamp(wantedTarget.x,-33,33);wantedTarget.z=clamp(wantedTarget.z,-24,26);changedView();}
+function updateCamera(a){theta+=(wTheta-theta)*a;phi+=(wPhi-phi)*a;radius+=(wRadius-radius)*a;target.lerp(wantedTarget,a);camera.position.set(target.x+radius*Math.sin(phi)*Math.sin(theta),target.y+radius*Math.cos(phi),target.z+radius*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);camera.updateMatrixWorld();}
+const pointers=new Map();let pair=null;const canvas=renderer.domElement;
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('pointerdown',e=>{if(e.button>2)return;canvas.focus({preventScroll:true});canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,button:e.button});pair=null;canvas.style.cursor='grabbing';$('hint').classList.add('used');});
+canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;const prev=pointers.get(e.pointerId);const dx=e.clientX-prev.x,dy=e.clientY-prev.y;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,button:prev.button});
+ if(pointers.size===1){if(prev.button===2||e.shiftKey)pan(dx,dy);else{wTheta-=dx*.006;wPhi=clamp(wPhi-dy*.0045,.22,1.48);changedView();}}
+ else{const ps=[...pointers.values()].slice(0,2);const dist=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y),cx=(ps[0].x+ps[1].x)/2,cy=(ps[0].y+ps[1].y)/2;if(pair){zoom(clamp(pair.dist/Math.max(dist,1),.85,1.18));pan(cx-pair.cx,cy-pair.cy);}pair={dist,cx,cy};}
+});
+const end=e=>{pointers.delete(e.pointerId);pair=null;if(!pointers.size)canvas.style.cursor='grab';};['pointerup','pointercancel','lostpointercapture'].forEach(t=>canvas.addEventListener(t,end));
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(Math.exp(clamp(e.deltaY,-100,100)*.0015));},{passive:false});
+canvas.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){wTheta-=.12;changedView();}else if(e.key==='ArrowRight'){wTheta+=.12;changedView();}else if(e.key==='ArrowUp'){wPhi=clamp(wPhi-.08,.22,1.48);changedView();}else if(e.key==='ArrowDown'){wPhi=clamp(wPhi+.08,.22,1.48);changedView();}else if(e.key==='+'||e.key==='=')zoom(.88);else if(e.key==='-')zoom(1.12);else if(e.key==='Home')preset('overview');else return;e.preventDefault();});
+$('day').onclick=()=>setNight(false);$('night').onclick=()=>setNight(true);$('home').onclick=()=>preset('overview');$('plus').onclick=()=>zoom(.83);$('minus').onclick=()=>zoom(1.2);$('motion').onclick=toggleAnimation;
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>preset(b.dataset.view));
+$('orbit').onclick=()=>{autoOrbit=!autoOrbit;$('orbit').setAttribute('aria-pressed',String(autoOrbit));};
+$('showGuesses').onchange=e=>{guesses.visible=e.target.checked;$('guessBadge').hidden=!guesses.visible;};
+const dialog=$('aboutDialog');$('about').onclick=()=>dialog.showModal();$('closeAbout').onclick=()=>dialog.close();dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+const labels=[['labelCurve',new THREE.Vector3(-23.5,3.4,-1.5)],['labelPalms',new THREE.Vector3(10,11.5,18)],['labelPier',new THREE.Vector3(14,8.3,-18)]];let showLabels=false;
+$('labels').onclick=()=>{showLabels=!showLabels;$('labels').setAttribute('aria-pressed',String(showLabels));};
+const projected=new THREE.Vector3();
+function updateLabels(){for(const [id,p]of labels){const el=$(id);if(!showLabels){el.hidden=true;continue;}projected.copy(p).project(camera);const x=(projected.x*.5+.5)*stage.clientWidth,y=(-projected.y*.5+.5)*stage.clientHeight;el.hidden=projected.z>1||projected.z< -1||x<70||x>stage.clientWidth-70||y<120||y>stage.clientHeight-140;if(!el.hidden)el.style.transform=`translate(${x}px,${y}px) translate(-50%,-100%)`;}}
+let lastW=stage.clientWidth,lastH=stage.clientHeight;
+new ResizeObserver(()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();if((lastW!==w||lastH!==h)&&activePreset==='overview')preset('overview');else if((lastW<700)!==(w<700)&&activePreset!=='custom')preset(activePreset);lastW=w;lastH=h;}).observe(stage);
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();showError('3D 畫面已暫停','裝置暫時釋放了繪圖資源，請重新整理頁面。');});
+preset('overview',true);setNight(false);$('loading').hidden=true;$('pieceCount').textContent=(pieces+waterTiles.length).toLocaleString('zh-TW');
+window.__lakeScene={getState:()=>({engine:THREE.REVISION,ready:true,night:isNight,animation:animate,elapsed,pieces:pieces+waterTiles.length,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,camera:camera.position.toArray(),target:target.toArray(),radius,guessVisible:guesses.visible,canvas:[canvas.width,canvas.height],frames,boat:boat.position.toArray()}),setNight,preset,scene,camera,renderer};
+function render(now){requestAnimationFrame(render);if(!isVisible)return;const dt=Math.min((now-previous)/1000,.05);previous=now;frames++;
+ if(animate)elapsed+=dt;
+ if(autoOrbit)wTheta+=dt*.075;
+ updateCamera(1-Math.exp(-dt*10));
+ const t=elapsed*.095;boat.position.set(8.5+Math.cos(t)*10.2,.87+Math.sin(elapsed*1.5)*.045,Math.sin(t)*5.7-.5);boat.rotation.y=Math.atan2(-Math.cos(t)*5.7,-Math.sin(t)*10.2);boat.rotation.z=Math.sin(elapsed*1.3)*.012;
+ wake.children.forEach((w,i)=>w.scale.z=1+Math.sin(elapsed*1.7-i*.65)*.13);
+ for(const g of glints){g.scale.x=g.userData.base*(.75+Math.sin(elapsed*1.15+g.userData.phase)*.25);}
+ updateLabels();renderer.render(scene,camera);
+}
+requestAnimationFrame(render);
+};
+function showError(title,detail){const l=document.getElementById('loading');l.hidden=false;l.innerHTML='<div class="load-mark">!</div><h2></h2><p></p><button class="retry" onclick="location.reload()">重新載入</button>';l.querySelector('h2').textContent=title;l.querySelector('p').textContent=detail;}
+// Two pinned public mirrors. Loading is non-blocking and fails visibly.
+const urls=['https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js'];
+function load(i){if(window.THREE){try{boot();}catch(e){console.error(e);showError('場景初始化失敗',e.message+'。請重新載入或換用 Chrome / Safari。');}return;}if(i>=urls.length){showError('無法下載 Three.js','請確認網路連線，或在允許外部程式庫的瀏覽器中開啟此頁。照片不會離開你的裝置。');return;}const s=document.createElement('script');s.src=urls[i];s.crossOrigin='anonymous';let done=false;const next=()=>{if(done)return;done=true;clearTimeout(timer);s.remove();load(i+1);};const timer=setTimeout(next,12000);s.onload=()=>{if(done)return;done=true;clearTimeout(timer);load(i+1);};s.onerror=next;document.head.appendChild(s);}
+load(0);
+})();
+
+</script>
+</body></html>
